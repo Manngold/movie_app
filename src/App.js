@@ -7,45 +7,34 @@ class App extends Component {
 
   //Render: componentWillMount => render => componentDidMount
   //Update: componentWillReceiveProps() => shouldComponentUpdate() => componentWillUpdate() => render() =>componentDidUpdate()
-
-  state = { }
-
-  componentDidMount(){
-    setTimeout(() => {
-      this.setState({
-        movies: [
+  state={}
   
-          {
-           title: "Matirx",
-           poster:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIVxLB1FVL2POzHuv2R6TbhXzONdxLmyJUqKLuUyDZRcY06AtX" 
-          },
-          {
-            title: "Full Metal Jacket",
-            poster:"https://images-na.ssl-images-amazon.com/images/I/71qDKzqJZrL._SL1101_.jpg"
-          },
-          {
-            title: "Oldboy",
-            poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1tTmiH4_DdTSbDOsrrnANifLOoVpIOfeGNRiJrYu2WkMPAumzA"
-          },
-          {
-            title: "Star Wars",
-            poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqE44O4JQKJ23DYL8VF-3t5dofC7BIZ6VOJxSmTtylgfMbGrdj"
-          },
-          {
-            title:'Transpoting',
-            poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp7n7rhKsAmOeHdlDK-xozOLkO2kIN0WedJs_SHjCh_Coug_ypBw"
-          }
-        
-        ]
-      })
-    },5000)
+  componentDidMount() {
+    this._getMovies();
   }
-  _renderMovies = () => {
-    const movies = this.state.movies.map((movie, index) => {
-      return <Movie title={movie.title} poster={movie.poster} key={index}/>
+  
+  _renderMovies = () => {//Calling movie list
+    const movies = this.state.movies.map((movie) => {
+      console.log(movie)
+      return <Movie title={movie.title} poster={movie.medium_cover_image} key={movie.id}/>
      })
      return movies
   }
+
+  _getMovies = async () => {
+    const movies = await this._callApi()
+    this.setState({
+      movies
+    })
+  }
+
+  _callApi = () => {
+    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=download_count')
+   .then(res => res.json())
+   .then(json => json.data.movies)
+   .catch(err => console.log(err))
+  }
+
   render() {
     
     return (
