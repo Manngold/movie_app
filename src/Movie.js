@@ -1,7 +1,15 @@
 import React, { Component } from 'react'; //import Componet from react
+import PropTypes from 'prop-types';
 import './Movie.css';
 
 class Movie extends Component{
+
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        poster: PropTypes.string.isRequired
+    }//check prop of title, poster
+
+
     render(){
         return(
             <div>
@@ -13,9 +21,14 @@ class Movie extends Component{
 
 }
 class MoviePoster extends Component{
+
+    static propTypes = {
+        poster: PropTypes.string.isRequired
+    }
+
     render(){
         return(
-            <img src={this.props.poster} />
+            <img src={this.props.poster} alt="Not Found error"/>
         )
     }
 }
